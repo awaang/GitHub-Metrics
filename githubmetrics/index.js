@@ -24,15 +24,28 @@ app.get('/api/stats/:username', async (req, res) => {
             }
         }
 
-        const totalRepos = repos.length;
+        let totalRepos = repos.length;
         let totalForks = 0;
+        let sortedLanguages = {};
         for (let i = 0; i < repos.length; i++) {
             totalForks += repos[i].forks_count;
+            if (repos[i].language) {
+                if (sortedLanguages[repos[i].language]) {
+                    sortedLanguages[repos[i].language] += 1;
+                } else {
+                    sortedLanguages[repos[i].language] = 1;
+                }
+            }
         }
+
+        let sortedLanguagesArray = Object.entries(sortedLanguages);
+        sortedLanguagesArray.sort((a, b) => b[1] - a[1]); // sort by language usage
+        console.log(sortedLanguagesArray);
 
         res.json({
             total_repos: totalRepos,
             total_forks: totalForks,
+            languages: sortedLanguagesArray,
         });
     } catch (error) {
         res.status(404).json({ message: 'error' });

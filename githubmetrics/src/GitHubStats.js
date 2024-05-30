@@ -27,6 +27,7 @@ const GitHubStats = () => {
             {stats && (<div>
                 <p>total repos: {stats.total_repos}</p>
                 <p>total forks: {stats.total_forks}</p>
+                <p>languages: {stats.languages}</p>
                 </div>)}
         </div>
     );
