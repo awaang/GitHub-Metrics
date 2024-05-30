@@ -25,9 +25,14 @@ app.get('/api/stats/:username', async (req, res) => {
         }
 
         const totalRepos = repos.length;
+        let totalForks = 0;
+        for (let i = 0; i < repos.length; i++) {
+            totalForks += repos[i].forks_count;
+        }
 
         res.json({
             total_repos: totalRepos,
+            total_forks: totalForks,
         });
     } catch (error) {
         res.status(404).json({ message: 'error' });
