@@ -24,7 +24,7 @@ const GitHubStats = () => {
                 placeholder="enter username"
             />
             <button onClick={fetchStats}>Submit</button>
-            {stats && (<div><p>total Stars: {stats.total_stars}</p></div>)}
+            {stats && (<div><p>total repos: {stats.total_repos}</p></div>)}
         </div>
     );
 };

@@ -8,15 +8,26 @@ app.use(cors())
 app.get('/api/stats/:username', async (req, res) => {
     const { username } = req.params;
     try {
-        const response = await axios.get(`https://api.github.com/users/${username}/repos`, {
-            params: { per_page: 1, page: 1 }
-        });
-        const firstRepo = response.data[0];
+        let page = 1;
+        let repos = [];
+        let moreRepos = true;
 
-        const totalStars = firstRepo.stargazers_count;
+        while(moreRepos) {
+            const response = await axios.get(`https://api.github.com/users/${username}/repos`, {
+                params: { per_page: 100, page}
+            });
+            repos = repos.concat(response.data); // add the repos to the list
+            if (response.data.length < 100) {
+                moreRepos = false; // if there are less than 100 more repos, we are done
+            } else {
+                page++; // next page
+            }
+        }
+
+        const totalRepos = repos.length;
 
         res.json({
-            total_stars: totalStars,
+            total_repos: totalRepos,
         });
     } catch (error) {
         res.status(404).json({ message: 'error' });
