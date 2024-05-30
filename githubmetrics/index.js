@@ -1,3 +1,10 @@
+//index.js
+
+// token
+require('dotenv').config();
+const githubAccessToken = process.env.GITHUB_ACCESS_TOKEN;
+
+// import Express.js, Axios, and Cors
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
@@ -14,7 +21,10 @@ app.get('/api/stats/:username', async (req, res) => {
 
         while(moreRepos) {
             const response = await axios.get(`https://api.github.com/users/${username}/repos`, {
-                params: { per_page: 100, page}
+                params: { per_page: 100, page },
+                headers: {
+                    'authorization': `${githubAccessToken}`
+                }
             });
             repos = repos.concat(response.data); // add the repos to the list
             if (response.data.length < 100) {
@@ -24,6 +34,7 @@ app.get('/api/stats/:username', async (req, res) => {
             }
         }
 
+        // calculate stats
         let totalRepos = repos.length;
         let totalForks = 0;
         let sortedLanguages = {};
@@ -38,9 +49,11 @@ app.get('/api/stats/:username', async (req, res) => {
             }
         }
 
+        // sortedLanguages is an object containing key value pairs
+        // need to convert sortedLanguages into an array of arrays
         let sortedLanguagesArray = Object.entries(sortedLanguages);
         sortedLanguagesArray.sort((a, b) => b[1] - a[1]); // sort by language usage
-        console.log(sortedLanguagesArray);
+        console.log(sortedLanguagesArray); //debugging
 
         res.json({
             total_repos: totalRepos,

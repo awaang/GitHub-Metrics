@@ -21,13 +21,13 @@ const GitHubStats = () => {
             <h1>user stats</h1>
             <input value={username} 
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="enter username"
+                placeholder="Enter username..."
             />
             <button onClick={fetchStats}>Submit</button>
             {stats && (<div>
-                <p>total repos: {stats.total_repos}</p>
-                <p>total forks: {stats.total_forks}</p>
-                <p>languages: {stats.languages}</p>
+                <p>Total repos: {stats.total_repos}</p>
+                <p>Total forks: {stats.total_forks}</p>
+                <p>Languages: {stats.languages}</p>
                 </div>)}
         </div>
     );
