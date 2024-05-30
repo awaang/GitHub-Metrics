@@ -45,7 +45,7 @@ app.get('/api/stats/:username', async (req, res) => {
         res.json({
             total_repos: totalRepos,
             total_forks: totalForks,
-            languages: sortedLanguagesArray,
+            languages: sortedLanguagesArray.map(([language, count]) => `(${language}: ${count}), `),
         });
     } catch (error) {
         res.status(404).json({ message: 'error' });
